@@ -1,42 +1,10 @@
-class Accion {
-    constructor(tipo, datos) {
-        this.tipo = tipo;
-        this.datos = datos;
-    }
-
-    boton() {
-        switch (this.tipo) {
-            case 'ir':
-                return '<a href="#" class="btn btn-primary js-ir" data-escenario="' + this.datos.id + '"> Ir a ' + this.datos.nombre + '</a>';
-
-            case 'mirar':
-                return '<a href="#" class="btn btn-info js-mirar" data-elemento="' + this.datos.id + '"> Mirar a ' + this.datos.nombre + '</a>';
-
-            case 'hablar':
-                return '<a href="#" class="btn btn-warning js-hablar" data-personaje="' + this.datos.id + '"> Hablar con ' + this.datos.nombre + '</a>'
-        }
-
-        return '';
-    }
-
-    resultado() {
-        switch (this.tipo) {
-            case 'mirar':
-                return this.datos.descripcion;
-
-            case 'hablar':
-                return this.datos.nombre + ' dice "' + this.datos.dialogo + '"';
-        }
-
-        return '';
-    }
-}
-
 class Tristan {
     constructor(mundo) {
         this.mundo = mundo;
 
         this.situacion = this.mundo.inicio();
+        this.inventario = [];
+        this.objetivo = false;
 
         // Acciones realizándose
         this.realizando = '';
@@ -59,10 +27,12 @@ class Tristan {
         this.realizando = null;
 
         return {
+            objetivo: this.objetivo,
             situacion: this.situacion.nombre,
             descripcion: this.situacion.descripcion,
             personajes: this.mundo.damePersonajes(this.situacion),
             acciones: acciones,
+            inventario: this.inventario.map(objeto => this.mundo.dameObjeto(objeto)),
             realizando: realizando
         };
     }
@@ -79,5 +49,17 @@ class Tristan {
 
     hablarCon(personaje) {
         this.realizando = new Accion('hablar', this.mundo.damePersonaje(personaje));
+    }
+
+    comer(objeto) {
+        this.realizando = new Accion('comer', this.mundo.dameObjeto(objeto));
+    }
+
+    terminar() {
+        this.objetivo = true;
+    }
+
+    anadirInventario(objeto) {
+        this.inventario.push(objeto);
     }
 }

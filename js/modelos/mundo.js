@@ -1,18 +1,8 @@
 class Escenario {
-    constructor(id, nombre, descripcion, personajes) {
+    constructor(id, nombre, descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-    }
-}
-
-class Personaje {
-    constructor(id, nombre, escenario, descripcion, dialogo) {
-        this.id = id;
-        this.nombre = nombre;
-        this.situacion = escenario;
-        this.descripcion = descripcion;
-        this.dialogo = dialogo;
     }
 }
 
@@ -41,15 +31,8 @@ class Mundo {
             ['sinapse', 'calleSinapse']
         ];
 
-        this.personajes = [
-            new Personaje(
-                'leti',
-                'Leticia',
-                this.dameEscenario('sinapse'),
-                'Sí, es tu madre Leticia',
-                '¡Hola Tristán!'
-            )
-        ];
+        this.personajes = PERSONAJES;
+        this.objetos = OBJETOS;
     }
 
     dameEscenario(id) {
@@ -63,11 +46,15 @@ class Mundo {
     }
 
     damePersonajes(escenario) {
-        return this.personajes.filter(personaje => personaje.situacion.id == escenario.id);
+        return this.personajes.filter(personaje => personaje.situacion == escenario.id);
     }
 
     damePersonaje(id) {
         return this.personajes.find(personaje => personaje.id == id);
+    }
+
+    dameObjeto(id) {
+        return this.objetos.find(objeto => objeto.id == id);
     }
 
     inicio() {
