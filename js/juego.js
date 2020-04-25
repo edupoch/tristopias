@@ -11,15 +11,39 @@ function log(mensaje) {
 function describir() {
     var estado = tristan.estado();
 
-    $estado.html(
+    var descripcion = '';
+
+    descripcion += 
         '<div class="card-header">' +
-            'Estoy en ' + estado.situacion +
-        '</div>' +
-        '<div class="card-body">' +
-            estado.descripcion + '<br><br>' + 
-            estado.uniones.map(union => '<a href="#" class="btn btn-primary js-ir" data-escenario="' + union.id + '"> Ir a ' + union.nombre + '</a>').join(' ') +
-        '</div>'
-    );
+            'Estás en ' + estado.situacion +
+        '</div>';
+
+    descripcion +=
+        '<div class="card-body">';
+
+    if (estado.realizando) {
+        descripcion +=
+            estado.realizando.resultado() + '<br><br>';
+    }
+
+    descripcion +=
+            estado.descripcion + '<br><br>';
+
+    if (estado.personajes.length) {
+        descripcion += 
+            'Puedes ver a ' +
+            estado.personajes.map(personaje => personaje.nombre).join(', ') +
+            '<br><br>';                    
+    }
+            
+    descripcion +=
+            estado.acciones.map(accion => accion.boton()).join(' ');
+
+    descripcion +=
+        '</div>';
+    
+
+    $estado.html(descripcion);
 
     $estado.find('.js-ir').click(function(e) {
         e.preventDefault();
@@ -33,6 +57,26 @@ function describir() {
             describir();
         });
     });
+
+    $estado.find('.js-mirar').click(function(e) {
+        e.preventDefault();
+
+        var elemento = $(this).data('elemento');
+
+        var descripcion = tristan.mirar(elemento);
+        
+        describir();
+    });
+
+    $estado.find('.js-hablar').click(function(e) {
+        e.preventDefault();
+
+        var personaje = $(this).data('personaje');
+
+        var descripcion = tristan.hablarCon(personaje);
+        
+        describir();
+    });
 }
 
 var inicio = localforage.getItem('situacion').then(function(inicio) {
@@ -43,6 +87,6 @@ var inicio = localforage.getItem('situacion').then(function(inicio) {
     $cargando.hide();        
     describir();
     $estado.show();
-    
+
 });
 
