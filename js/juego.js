@@ -1,6 +1,7 @@
 var mundo = new Mundo();
 var tristan = new Tristan(mundo);
 
+var $cargando = $('.js-cargando');
 var $estado = $('.js-estado');
 
 function log(mensaje) {
@@ -38,7 +39,10 @@ var inicio = localforage.getItem('situacion').then(function(inicio) {
     if (inicio) {
         tristan.irA(inicio);
     }    
-    
+
+    $cargando.hide();        
     describir();
+    $estado.show();
+    
 });
 
