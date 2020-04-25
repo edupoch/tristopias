@@ -16,12 +16,12 @@ class Mundo {
             ),
             new Escenario(
                 'claseSinapse', 
-                'Clase de Sinapse',
+                'La clase de Sinapse',
                 'La clase está vacía'
             ),
             new Escenario(
                 'calleSinapse', 
-                'Calle',
+                'La calle',
                 'Estoy en Avenida de Oza. Antes de poder seguir avanzando, debería estar acompañado por un adulto'
             ),
         ];
